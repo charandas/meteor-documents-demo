@@ -17,10 +17,14 @@
     <div class="container full-height">
         <div class="row upper">
             <div class="span3 full-height">
+                {{ loginButtons }}
                 {{> docList}}
             </div>
-            <div class="span9 editor-container full-height">
+            <div class="span7 editor-container full-height">
                 {{> editor}}
+            </div>
+            <div class="span2 editor-container full-height">
+                {{> invites}}
             </div>
         </div>
         <div class="row footer">
@@ -61,8 +65,30 @@
         <div class="navbar-inner">
             <form class="navbar-form pull-left">
                 <input class="input-xlarge" type="text" value="{{title}}">
-                <button class="btn btn-danger btn-small">Delete this document</button>
+                <button class="btn btn-danger btn-small delete">Delete this document</button>
+                <button class="btn btn-primary btn-default invite">Invite others!</button>
             </form>
         </div>
+    </div>
+</template>
+
+<template name="invites">
+    <form id="invite-form">
+        <select multiple="multiple" id="members-to-invite-select" data-selected-text-format="count>3">
+          <option>Mustard</option>
+          <option>Ketchup</option>
+          <option>Barbecue</option>
+          <option>Onions</option>
+        </select>
+    </form>
+</template>
+
+<template name="unused">
+    <div class="btn-group" data-toggle="buttons" id="members-to-invite">
+        {{#each members}}
+            <label class="btn btn-primary">
+                <input type="checkbox"> {{this}}
+            </label>
+        {{/each}}
     </div>
 </template>
