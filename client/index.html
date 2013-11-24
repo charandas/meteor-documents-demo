@@ -24,7 +24,7 @@
                 {{> editor}}
             </div>
             <div class="span2 editor-container full-height">
-                {{> invites}}
+                {{> users}}
             </div>
         </div>
         <div class="row footer">
@@ -55,7 +55,9 @@
 
 <template name="editor">
     {{#withif docid}}
-        {{> docTitle}}
+        {{#if isOwner}}
+            {{> docTitle}}
+        {{/if}}        
         {{sharejsAce docid callback=config id="editor"}}
     {{/withif}}
 </template>
@@ -64,31 +66,61 @@
     <div class="navbar">
         <div class="navbar-inner">
             <form class="navbar-form pull-left">
-                <input class="input-xlarge" type="text" value="{{title}}">
+                <input id="documentName" class="input-xlarge" type="text" value="{{title}}">
                 <button class="btn btn-danger btn-small delete">Delete this document</button>
-                <button class="btn btn-primary btn-default invite">Invite others!</button>
             </form>
         </div>
     </div>
 </template>
 
-<template name="invites">
-    <form id="invite-form">
-        <select multiple="multiple" id="members-to-invite-select" data-selected-text-format="count>3">
-          <option>Mustard</option>
-          <option>Ketchup</option>
-          <option>Barbecue</option>
-          <option>Onions</option>
-        </select>
-    </form>
+<template name="users">
+    {{#if isOwner}}
+        {{> invites}}
+    {{/if}}
+    {{#if owner}}
+        {{> collab}}
+    {{/if}}
 </template>
 
-<template name="unused">
-    <div class="btn-group" data-toggle="buttons" id="members-to-invite">
-        {{#each members}}
-            <label class="btn btn-primary">
-                <input type="checkbox"> {{this}}
-            </label>
-        {{/each}}
+<template name="invites">
+    <form id="invite-form">
+        <div id="inviteControls" class="btn-group" data-toggle="buttons-radio">
+            <button class="btn btn-warning btn-small" id="invite" data-value="send">Send Invite</button>
+            <button class="btn btn-danger btn-small" id="revokeInvite" data-value="revoke">Revoke Invite</button>
+            <button class="btn btn-primary btn-small" id="resetInvite" data-value="reset">Reset</button>
+        </div>
+        <select id="members-to-invite-select" multiple="multiple" data-selected-text-format="count" title="Pick Members">
+          {{#each members}}
+                <option>{{this}}</option>
+          {{/each}}
+        </select>
+        <button id="confirmInvite">Confirm</button>
+    </form>
+
+    <div id="invitesModal" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>{{status}}</h3>
+        </div>
+  
+        <div class="modal-body">
+          <ul>
+          {{#each affectedMembers}}
+                <li>{{this}}</li>
+          {{/each}}
+          </ul>
+        </div>
+    </div>
+</template>
+
+<template name="collab">
+    <div id="collab-users">
+        <h4><bold>Collaborators</bold></h4>
+        <ul class="unstyled">
+            <li><i class="fa fa-user"></i> {{owner}}</li>
+            {{#each invited}}
+                <li><i class="fa fa-users"></i> {{this}}</li>
+            {{/each}}
+        </ul>
     </div>
 </template>

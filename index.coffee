@@ -5,17 +5,12 @@ this.Documents.allow({
         # only allow insertion if user logged in
         (!! userId)
     update: (userId, doc, fields) ->
-        if fields[0] == 'invitedUsers'
-            return true
-
-        return false
+        (doc.userId is userId and fields[0] in ['invitedUsers', 'title'])
+    remove: (userId, doc) ->
+        (doc.userId is userId)
 })
 
 Meteor.methods
   deleteDocument: (id) ->
     Documents.remove(id)
     ShareJS.model.delete(id) unless @isSimulation # ignore error
-
-  inviteOnDocument: (id, users) ->
-    console.log(users[0])
-    Documents.update({_id: id}, {$addToSet: {invitedUsers: users[0]}})

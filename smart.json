@@ -3,6 +3,8 @@
     "sharejs": {
       "path": "../meteor-sharejs"
     },
-    "accounts-ui-bootstrap-dropdown": {}
+    "accounts-ui-bootstrap-dropdown": {},
+    "spin": {},
+    "font-awesome": {}
   }
 }
