@@ -5,7 +5,23 @@
 <body>
     {{> forkme}}
     {{> main}}
+    {{> modals}}
 </body>
+
+<template name="modals">
+<div id="revokedModal" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Document closed</h3>
+    </div>
+
+    <div class="modal-body">
+      <p>
+        The invitation for this document was withdrawn. You may wanna contact the owner.
+      </p>
+    </div>
+</div>
+</template>
 
 <template name="forkme">
     <a href="https://github.com/mizzao/meteor-documents-demo">

@@ -32,6 +32,7 @@ if (Meteor.isClient)
             Session.set('document', null)
             Session.set('owner', "")
             Session.set('invitedUsers', [])
+            $("#revokedModal").trigger("revokedEvent")
     })
 
 # Observe changes on documents, especially revokePending array property

@@ -7,6 +7,11 @@ Handlebars.registerHelper 'isOwner', () ->
 Handlebars.registerHelper 'owner', () ->
   UserEmailById(Session.get("owner"))
 
+Template.modals.rendered = ->
+    $('#revokedModal').on 'revokedEvent',  (e) ->
+      $("#revokedModal").modal('show')
+
+
 Template.docList.documents = ->
   users = [Meteor.userId()]
   Documents.find({$or: [{userId: users[0]}, {invitedUsers: {$in: users}}]})
