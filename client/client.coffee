@@ -2,23 +2,10 @@ Handlebars.registerHelper "withif", (obj, options) ->
   if obj then options.fn(obj) else options.inverse(this)
 
 Handlebars.registerHelper 'isOwner', () ->
-  docid = Session.get('document')
-  return false if !docid
-
-  docCursor = Documents.find({_id: docid})
-  return false if docCursor.count == 0
-
-  return docCursor.fetch()[0].userId is Meteor.userId()
+  Session.get("isOwner")
 
 Handlebars.registerHelper 'owner', () ->
-  docid = Session.get('document')
-  return unless docid
-
-  docCursor = Documents.find({_id: docid})
-  return "" if docCursor.count == 0
-
-  userId = docCursor.fetch()[0].userId
-  return UserEmailById(userId)
+  UserEmailById(Session.get("owner"))
 
 Template.docList.documents = ->
   users = [Meteor.userId()]
@@ -26,15 +13,20 @@ Template.docList.documents = ->
 
 Template.docList.events =
   "click button": ->
+    userId = Meteor.userId()
     Documents.insert({
         title: "untitled",
-        userId: Meteor.userId(),
+        userId: userId,
         invitedUsers: [],
         private: false,
+        revokePending: [],
       },
       (err, id) ->
         return unless id
         Session.set("document", id)
+        Session.set("owner", userId)
+        Session.set("isOwner", true)
+        Session.set("invitedUsers", [])
       )
 
 Template.docItem.current = ->
@@ -44,6 +36,9 @@ Template.docItem.events =
   "click a": (e) ->
     e.preventDefault()
     Session.set("document", @_id)
+    Session.set("owner", @userId)
+    Session.set("isOwner", @userId == Meteor.userId())
+    Session.set("invitedUsers", @invitedUsers)
 
 Template.docTitle.title = ->
   # Strange bug https://github.com/meteor/meteor/issues/1447
@@ -80,13 +75,7 @@ Template.editor.config = ->
     ace.getSession().setUseWrapMode(true)
 
 Template.collab.invited = ->
-  docid = Session.get('document')
-  return unless docid
-
-  docCursor = Documents.find({_id: docid})
-  return [] if docCursor.count == 0
-
-  return UserEmailsById(docCursor.fetch()[0].invitedUsers)
+  UserEmailsById(Session.get('invitedUsers'))
 
 Template.invites.members = ->
   currentUser = Meteor.userId()

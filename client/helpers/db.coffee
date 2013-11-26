@@ -14,9 +14,9 @@ userIdsByEmail = (emails) ->
     return result
 
 @UserEmailById = (id) ->
-    userCursor = Meteor.users.find({_id: id})
-    return "" if userCursor.count == 0
-    return userCursor.fetch()[0].emails[0].address
+    return "" unless id
+    user = Meteor.users.findOne({_id: id})
+    return user.emails[0].address
 
 @SendInviteToUsers = (id, userEmails) ->
     if userEmails.length > 0
@@ -24,4 +24,4 @@ userIdsByEmail = (emails) ->
 
 @RevokeInviteFromUsers = (id, userEmails) ->
     if userEmails.length > 0
-      Documents.update({_id: id}, {$pullAll: {invitedUsers: userIdsByEmail(userEmails)}})
+      Documents.update({_id: id}, {$addToSet: {revokePending: {$each: userIdsByEmail(userEmails)}}})
