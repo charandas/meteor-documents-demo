@@ -1,0 +1,38 @@
+{
+  "public": {
+    "sharejs": {
+      "user_accounts_auth": true
+    }
+  },
+  "sharejs": {
+    "options": {
+      "user_accounts_auth": {
+        "authorize": {
+          "criteria": {
+            "collection": "documents",
+            "token_validations": {
+              "or": {
+                "invitedUsers": "is_in_array",
+                "userId": "is_equal"
+              }
+            },
+            "apply_on": [
+              "read",
+              "update",
+              "create",
+              "delete"
+            ]
+          }
+        },
+        "authenticate": {
+          "criteria": {
+            "collection": "users",
+            "token_validations": {
+              "_id": "is_equal"
+            }
+          }
+        }
+      }
+    }
+  }
+}
