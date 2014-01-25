@@ -7,7 +7,8 @@
       },
       "accounts-ui-bootstrap-dropdown": {},
       "spin": {},
-      "font-awesome": {}
+      "font-awesome": {},
+      "build-fetcher": {}
     },
     "packages": {
       "sharejs": {
@@ -20,13 +21,18 @@
       },
       "spin": {
         "git": "https://github.com/SachaG/meteor-spin.git",
-        "tag": "v0.2.0",
-        "commit": "fd3a2871a69442848b4b4e74f5e1ae28fa4a95a4"
+        "tag": "v0.2.2",
+        "commit": "3f655f0016228e4195acc784c45d3e3a247dc39f"
       },
       "font-awesome": {
         "git": "https://github.com/nate-strauser/meteor-font-awesome.git",
         "tag": "v4.0.3",
         "commit": "61e9361384347547ae144f8228faa4deffda23db"
+      },
+      "build-fetcher": {
+        "git": "https://github.com/mizzao/meteor-build-fetcher.git",
+        "tag": "v0.1.0",
+        "commit": "e3813b1fc7f5c576e8e1fa4c51ae6f4687780a35"
       }
     }
   }

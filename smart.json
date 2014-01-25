@@ -5,6 +5,7 @@
     },
     "accounts-ui-bootstrap-dropdown": {},
     "spin": {},
-    "font-awesome": {}
+    "font-awesome": {},
+    "build-fetcher": {}
   }
 }
